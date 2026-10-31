@@ -1,0 +1,6 @@
+{
+  "name": "KineGlove - Dashboard de Rehabilitación de Mano",
+  "description": "Plataforma clínica para fisioterapeutas que supervisa la rehabilitación motriz de la mano mediante guante sensorizado, análisis de rango de movimiento (ROM), fuerza de agarre FSR y alertas de estancamiento.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
