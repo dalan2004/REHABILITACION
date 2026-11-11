@@ -6,6 +6,23 @@ export type GameType = 'mario' | 'car' | 'piano' | string;
 export type ResultType = 'win' | 'lose' | 'quit' | string;
 export type FingerKey = 'p' | 'i' | 'm' | 'a' | 'k';
 
+export type UserRole = 'fisio' | 'paciente';
+
+export interface AuthUser {
+  role: UserRole;
+  name: string;
+  email?: string;
+  patientName?: string; // Para rol paciente: vincula a su nombre en las sesiones
+  licenseNumber?: string; // Para rol fisio
+}
+
+export interface CredentialsConfig {
+  fisioEmail: string;
+  fisioPassword: string;
+  fisioName: string;
+  patientDefaultPin: string;
+}
+
 export interface FingerValues {
   p: number; // Pulgar (0 - 90°)
   i: number; // Índice (0 - 90°)

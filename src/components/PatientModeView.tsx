@@ -15,20 +15,25 @@ import {
   Zap,
   Target,
   CheckCircle2,
+  Play,
 } from 'lucide-react';
 
 interface PatientModeViewProps {
   sessions: SessionItem[];
   allPatients: string[];
   initialPatient?: string;
-  onSwitchToClinician: () => void;
+  userRole?: 'fisio' | 'paciente';
+  onSwitchToClinician?: () => void;
+  onOpenGame?: () => void;
 }
 
 export const PatientModeView: React.FC<PatientModeViewProps> = ({
   sessions,
   allPatients,
   initialPatient,
+  userRole = 'fisio',
   onSwitchToClinician,
+  onOpenGame,
 }) => {
   // Paciente seleccionado para el modo paciente
   const [activePatient, setActivePatient] = useState<string>(() => {
@@ -96,13 +101,14 @@ export const PatientModeView: React.FC<PatientModeViewProps> = ({
 
           {/* Selector de Paciente & Botón Volver */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-            {allPatients.length > 1 && (
+            {userRole === 'fisio' && allPatients.length > 1 && (
               <div className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-xs backdrop-blur-xs border border-white/20">
                 <User className="h-4 w-4 text-teal-200" />
                 <select
                   value={activePatient}
                   onChange={(e) => setActivePatient(e.target.value)}
                   className="bg-transparent text-white font-medium focus:outline-none cursor-pointer"
+                  title="Supervisar progreso de otro paciente"
                 >
                   {allPatients.map((p) => (
                     <option key={p} value={p} className="text-slate-900">
@@ -113,17 +119,54 @@ export const PatientModeView: React.FC<PatientModeViewProps> = ({
               </div>
             )}
 
-            <button
-              onClick={onSwitchToClinician}
-              className="px-3.5 py-2 rounded-xl bg-white text-teal-900 text-xs font-bold hover:bg-teal-50 transition-colors shadow-xs"
-            >
-              Ver Modo Fisioterapeuta
-            </button>
+            {userRole === 'fisio' && onSwitchToClinician && (
+              <button
+                onClick={onSwitchToClinician}
+                className="px-3.5 py-2 rounded-xl bg-white text-teal-900 text-xs font-bold hover:bg-teal-50 transition-colors shadow-xs"
+              >
+                Ver Modo Fisioterapeuta
+              </button>
+            )}
+
+            {userRole === 'paciente' && (
+              <div className="flex items-center gap-1.5 rounded-xl bg-white/15 px-3.5 py-2 text-xs font-semibold backdrop-blur-xs border border-white/20">
+                <Heart className="h-4 w-4 text-rose-300" />
+                <span>Plan Activo de Recuperación</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Decorative circle */}
         <div className="absolute -right-8 -bottom-8 h-40 w-40 rounded-full bg-white/5 pointer-events-none" />
+      </div>
+
+      {/* Mario Rehab Game Launcher Card */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-900 p-5 sm:p-6 text-white shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="space-y-1 text-center sm:text-left z-10">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-bold backdrop-blur-xs">
+            <Gamepad2 className="h-3.5 w-3.5 text-amber-300" />
+            <span>Juego de Rehabilitación Oficial</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight">
+            Super Mario Rehab v10
+          </h3>
+          <p className="text-xs text-purple-100 max-w-lg">
+            ¡Conecta tu guante sensorizado! Salta, esquiva y supera obstáculos flexionando tus dedos para ganar estrellas y recuperar la movilidad de tu mano.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={onOpenGame}
+          className="z-10 w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-purple-950 font-extrabold hover:bg-purple-50 transition-all shadow-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] shrink-0"
+        >
+          <Play className="h-4 w-4 fill-purple-950 text-purple-950" />
+          <span>¡JUGAR MARIO REHAB!</span>
+        </button>
+
+        {/* Decorative background glow */}
+        <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-500/30 blur-2xl pointer-events-none" />
       </div>
 
       {/* Tarjetas de Logros Gamificados */}

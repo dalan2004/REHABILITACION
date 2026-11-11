@@ -92,7 +92,7 @@ export function getFailedThresholds(session: SessionItem): FailedThreshold[] {
 /**
  * Normaliza una sesión garantizando que si 'g' no existe, se tome como 'mario'
  */
-export function normalizeSession(raw: any, index: number): SessionItem {
+export function normalizeSession(raw: any, index: number = 0): SessionItem {
   return {
     id: raw.id ?? `ses-${index + 1}`,
     d: String(raw.d || new Date().toISOString()),
